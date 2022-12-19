@@ -1,0 +1,69 @@
+name: Create Update Branch NPM
+
+on:
+  workflow_call:
+    inputs:
+      subfolder:
+        required: false
+        type: string
+        default: "./"
+    outputs:
+      branchName:
+        description: "Name of the created branch"
+        value: ${{ jobs.create-branch.outputs.outputName }}
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    outputs:
+      outputName: ${{ steps.outputbranchname.outputs.branchname }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: create new Branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-branch-${{ github.run_id }}
+
+      - run: cd ${{ inputs.subfolder }} && npm install -S
+      - run: cd ${{ inputs.subfolder }} && npm outdated || true
+      - run: cd ${{ inputs.subfolder }} && npm update -S
+      - run: cd ${{ inputs.subfolder }} && npm install -S
+      - run: cd ${{ inputs.subfolder }} && npm outdated || true
+      - run: cd ${{ inputs.subfolder }} && npx npm-check-updates -u --peer
+      - run: cd ${{ inputs.subfolder }} && npm install -S
+      - run: cd ${{ inputs.subfolder }} && npm update -S
+      - run: cd ${{ inputs.subfolder }} && npm install -S
+
+      - name: git add and push to remote
+        run: |
+          git push -u origin update-branch-${{ github.run_id }}
+          git add -A
+          git commit -m "Update dependencies"
+          git push -u origin update-branch-${{ github.run_id }}
+
+      - name: create PR
+        uses: devops-infra/action-pull-request@v0.5.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: update-branch-${{ github.run_id }}
+          target_branch: main
+          title: Update Frontend PR
+          body: "**Automated pull request**"
+          label: update
+
+      - id: outputbranchname
+        run: echo branchname=update-branch-${{ github.run_id }} >> $GITHUB_OUTPUT
