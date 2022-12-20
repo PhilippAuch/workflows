@@ -1,0 +1,20 @@
+name: Initialization
+
+on:
+  workflow_call:
+
+jobs:
+  print-env:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - run: env
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - run: set -a && source .env && set +a
+
+      - run: env
