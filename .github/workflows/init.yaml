@@ -5,7 +5,7 @@ on:
 
 jobs:
   print-env:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - run: env
@@ -19,5 +19,7 @@ jobs:
         with:
           envFile: '.env'
           expand: 'true'
+          expandWithJobEnv: 'true'
+          export: 'true'
 
       - run: env
