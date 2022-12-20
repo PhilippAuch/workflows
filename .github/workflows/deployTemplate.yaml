@@ -35,7 +35,7 @@ jobs:
         uses: instrumenta/kubeval-action@master
         with:
           strict: true
-          files: ${{ inputs.subfolder }}filled/*
+          files: ${{ inputs.subfolder }}filled/
 
   deploy:
     runs-on: ubuntu-22.04
