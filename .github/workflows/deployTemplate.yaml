@@ -26,7 +26,7 @@ jobs:
           export: 'true'
 
       - name: Replace ENV variables
-        run: for f in $(find ${{ inputs.subfolder }} -regex '.*\.ya*ml'); do envsubst < $f > "${{ inputs.subfolder }}filled/$f"; done
+        run: for f in $(find -maxdepth 1 ${{ inputs.subfolder }} -regex '\.ya*ml'); do envsubst < $f > "${{ inputs.subfolder }}filled/$f"; done
 
       - name: Debug output filled files
         run: tail -n +1 ${{ inputs.subfolder }}filled/*
@@ -37,8 +37,26 @@ jobs:
           strict: true
           files: ${{ inputs.subfolder }}filled/*
 
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - uses: cardinalby/export-env-action@v1
+        with:
+          envFile: '.env'
+          expand: 'true'
+          expandWithJobEnv: 'true'
+          export: 'true'
+
+      - name: Replace ENV variables
+        run: for f in $(find -maxdepth 1 ${{ inputs.subfolder }} -regex '\.ya*ml'); do envsubst < $f > "${{ inputs.subfolder }}filled/$f"; done
+
       - name: Trigger deploy
-        if: false
         uses: Consensys/kubernetes-action@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
