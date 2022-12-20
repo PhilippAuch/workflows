@@ -7,7 +7,9 @@ on:
         required: false
         type: string
         default: "./"
-
+    secrets:
+      KUBE_CONFIG_DATA:
+        required: true
 jobs:
   check-files:
     runs-on: ubuntu-22.04
@@ -37,7 +39,7 @@ jobs:
           strict: true
           files: ${{ inputs.subfolder }}filled/
 
-  deploy:
+  apply-to-k8s:
     runs-on: ubuntu-22.04
     needs: check-files
 
