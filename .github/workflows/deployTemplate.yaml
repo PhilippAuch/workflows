@@ -26,7 +26,7 @@ jobs:
           export: 'true'
 
       - name: Replace ENV variables
-        run: for f in $(find -maxdepth 1 ${{ inputs.subfolder }} -regex '\.ya*ml'); do envsubst < $f > "${{ inputs.subfolder }}filled/$f"; done
+        run: cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
       - name: Debug output filled files
         run: tail -n +1 ${{ inputs.subfolder }}filled/*
@@ -39,6 +39,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-22.04
+    needs: check-files
 
     steps:
       - name: Checkout repository
