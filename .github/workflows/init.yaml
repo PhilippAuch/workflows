@@ -15,6 +15,9 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - run: set -a && source .env && set +a
+      - uses: cardinalby/export-env-action@v1
+        with:
+          envFile: '.env'
+          expand: 'true'
 
       - run: env
