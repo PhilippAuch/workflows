@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - uses: cardinalby/export-env-action@v1
+      - uses: cardinalby/export-env-action@v2
         with:
           envFile: '.env'
           expand: 'true'
