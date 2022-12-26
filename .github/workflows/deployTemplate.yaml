@@ -42,6 +42,7 @@ jobs:
   apply-to-k8s:
     runs-on: ubuntu-22.04
     needs: check-files
+    if: ${{ ((github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule') }}
 
     steps:
       - name: Checkout repository
