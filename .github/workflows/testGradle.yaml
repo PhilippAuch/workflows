@@ -22,4 +22,4 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run build with Gradle Wrapper
-        run: ${{ inputs.subfolder }}gradlew clean build test
+        run: ${{ inputs.subfolder }}gradlew -p ${{ inputs.subfolder }} clean build test
