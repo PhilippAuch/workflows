@@ -9,24 +9,17 @@ jobs:
     uses: PhilippAuch/workflows/.github/workflows/init.yaml@main
 
   build:
-    uses: PhilippAuch/workflows/.github/workflows/buildDocker.yaml@main
+    uses: PhilippAuch/workflows/.github/workflows/buildGradleDocker.yaml@main
     strategy:
       matrix:
         service: [ 'stock', 'target' ]
     with:
       subfolder: './${{ matrix.service }}-service/'
-      imageNameAddon: '${{ matrix.service }}-service'
-
-  test:
-    uses: PhilippAuch/workflows/.github/workflows/testGradle.yaml@main
-    strategy:
-      matrix:
-        service: [ 'stock', 'target' ]
-    with:
-      subfolder: './${{ matrix.service }}-service/'
+      imageNameAddon: '-${{ matrix.service }}-service'
 
   deploy:
     uses: PhilippAuch/workflows/.github/workflows/deployTemplate.yaml@main
+    needs: build
     with:
       subfolder: './kubernetes/'
     secrets:
