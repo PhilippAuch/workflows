@@ -1,0 +1,20 @@
+name: Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  init:
+    uses: PhilippAuch/workflows/.github/workflows/init.yaml@main
+
+  build:
+    uses: TODO
+
+  test:
+    uses: TODO
+
+  deploy:
+    uses: PhilippAuch/workflows/.github/workflows/deployTemplate.yaml@main
+    secrets:
+      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
