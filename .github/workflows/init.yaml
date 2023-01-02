@@ -15,7 +15,14 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - uses: cardinalby/export-env-action@v2
+      - name: Check .env file existence
+        id: check_files
+        uses: andstor/file-existence-action@v2.0.0
+        with:
+          files: ".env"
+
+      - uses: cardinalby/export-env-action@v2.0.1
+        if: steps.check_files.outputs.files_exists == 'true'
         with:
           envFile: '.env'
           expand: 'true'
