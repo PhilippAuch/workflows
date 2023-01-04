@@ -11,6 +11,10 @@ on:
         required: false
         type: string
         default: ""
+      branch-name:
+        required: false
+        type: string
+        default: ${{ github.ref }}
 
 env:
   REGISTRY: ghcr.io
@@ -23,7 +27,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.2.0
         with:
+          ref: ${{ inputs.branch-name }}
           fetch-depth: "0"
+
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -41,6 +47,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.2.0
         with:
+          ref: ${{ inputs.branch-name }}
           fetch-depth: "0"
 
       - name: Set up Docker Buildx
@@ -80,6 +87,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.2.0
         with:
+          ref: ${{ inputs.branch-name }}
           fetch-depth: "0"
 
       - name: Set up Docker Buildx
