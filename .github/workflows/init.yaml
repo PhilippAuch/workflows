@@ -11,7 +11,7 @@ jobs:
       - run: env
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.3.0
         with:
           fetch-depth: "0"
 
@@ -21,7 +21,7 @@ jobs:
         with:
           files: ".env"
 
-      - uses: cardinalby/export-env-action@2.0.1
+      - uses: cardinalby/export-env-action@2.1.0
         if: steps.check_files.outputs.files_exists == 'true'
         with:
           envFile: '.env'
