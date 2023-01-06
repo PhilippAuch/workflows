@@ -20,26 +20,6 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  gradle-test:
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3.3.0
-        with:
-          ref: ${{ inputs.branch-name }}
-          fetch-depth: "0"
-
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '19'
-          distribution: 'corretto'
-
-      - name: gradle clean test
-        run: ${{ inputs.subfolder }}gradlew -p ${{ inputs.subfolder }} clean test
-
   docker-build:
     runs-on: ubuntu-22.04
 
