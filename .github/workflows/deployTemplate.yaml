@@ -40,6 +40,11 @@ jobs:
           expandWithJobEnv: 'true'
           export: 'true'
 
+      - name: Debug pullsecret before
+        run: |
+          echo "pullsecret.json"
+          cat ${{ inputs.subfolder }}pullsecret.json
+
       - name: Replace ENV variables
         run: |
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
@@ -50,7 +55,9 @@ jobs:
           cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
       - name: Debug output filled files
-        run: tail -n +1 ${{ inputs.subfolder }}filled/*
+        run: |
+          tail -n +1 ${{ inputs.subfoldexr }}pullsecret_filled.json
+          tail -n +1 ${{ inputs.subfolder }}filled/*
 
       - name: Validate files
         uses: instrumenta/kubeval-action@master
