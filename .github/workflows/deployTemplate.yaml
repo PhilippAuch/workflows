@@ -10,6 +10,8 @@ on:
     secrets:
       KUBE_CONFIG_DATA:
         required: true
+      KUBE_PULL_SECRET:
+        required: true
 
 env:
   REGISTRY: ghcr.io
