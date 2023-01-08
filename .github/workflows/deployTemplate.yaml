@@ -49,7 +49,7 @@ jobs:
           cat ${{ inputs.subfolder }}pullsecret.json
           cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
           echo "pullsecret_filled.json"
-          cat ${{ inputs.subfoldexr }}pullsecret_filled.json
+          cat ${{ inputs.subfolder }}pullsecret_filled.json
           export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
           echo "$PULL_SECRET"
           echo $PULL_SECRET
@@ -57,7 +57,7 @@ jobs:
 
       - name: Debug output filled files
         run: |
-          tail -n +1 ${{ inputs.subfoldexr }}pullsecret_filled.json
+          tail -n +1 ${{ inputs.subfolder }}pullsecret_filled.json
           tail -n +1 ${{ inputs.subfolder }}filled/*
 
       - name: Validate files
