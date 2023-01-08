@@ -38,20 +38,11 @@ jobs:
           expandWithJobEnv: 'true'
           export: 'true'
 
-      - name: Check PULL_SECRET file existence
-        id: check_files_PULL_SECRET
-        uses: andstor/file-existence-action@v2.0.0
-        with:
-          files: "${{ inputs.subfolder }}pullsecret.json"
-
-      - name: fill PULL_SECRET variable
-        if: steps.check_files_PULL_SECRET.outputs.files_exists == 'true'
+      - name: Replace ENV variables
         run: |
           cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
           export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
-
-      - name: Replace ENV variables
-        run: cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
+          cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
       - name: Debug output filled files
         run: tail -n +1 ${{ inputs.subfolder }}filled/*
