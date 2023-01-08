@@ -2,6 +2,9 @@ name: Initialization
 
 on:
   workflow_call:
+    
+env:
+  REGISTRY: ghcr.io
 
 jobs:
   print-env:
