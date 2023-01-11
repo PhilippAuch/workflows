@@ -11,6 +11,12 @@ on:
         required: false
         type: string
         default: ${{ github.ref }}
+      docker-compose-file:
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
 
 jobs:
   playwright:
@@ -22,6 +28,13 @@ jobs:
         with:
           ref: ${{ inputs.branch-name }}
           fetch-depth: "0"
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@v3
         with:
@@ -35,9 +48,18 @@ jobs:
         working-directory: ${{ inputs.subfolder }}
         run: npx playwright install --with-deps
 
+      - name: Pull docker images
+        run: docker-compose -f ${{ inputs.docker-compose-file }} pull
+
+      - name: Start docker images
+        run: docker-compose -f ${{ inputs.docker-compose-file }} up -d
+
       - name: Run Playwright tests
         working-directory: ${{ inputs.subfolder }}
         run: npx playwright test
+
+      - name: Stop docker
+        run: docker-compose -f ${{ inputs.docker-compose-file }} down
 
       - uses: actions/upload-artifact@v3
         if: always()
