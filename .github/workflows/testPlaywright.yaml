@@ -54,6 +54,9 @@ jobs:
       - name: Start docker images
         run: docker-compose -f ${{ inputs.docker-compose-file }} up -d
 
+      - name: Wait 60s for startup
+        run: sleep 60
+
       - name: Run Playwright tests
         working-directory: ${{ inputs.subfolder }}
         run: npx playwright test
