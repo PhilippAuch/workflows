@@ -1,3 +1,4 @@
+---
 name: Workflow
 
 on:
@@ -12,7 +13,7 @@ jobs:
     uses: PhilippAuch/workflows/.github/workflows/buildGradleDocker.yaml@main
     strategy:
       matrix:
-        service: [ 'stock', 'target' ]
+        service: ['stock', 'target']
     with:
       subfolder: './${{ matrix.service }}-service/'
       imageNameAddon: '-${{ matrix.service }}-service'
