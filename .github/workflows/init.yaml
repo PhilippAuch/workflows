@@ -2,7 +2,14 @@ name: Initialization
 
 on:
   workflow_call:
-    
+    inputs:
+      branch-name:
+        required: false
+        type: string
+        default: ${{ github.ref }}
+  push:
+  pull_request:
+
 env:
   REGISTRY: ghcr.io
 
@@ -16,6 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.3.0
         with:
+          ref: ${{ inputs.branch-name }}
           fetch-depth: "0"
 
       - name: Check .env file existence
@@ -33,3 +41,15 @@ jobs:
           export: 'true'
 
       - run: env
+
+  validate-yaml:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+        with:
+          ref: ${{ inputs.branch-name }}
+          fetch-depth: "0"
+
+      - name: Validate YAML file
+        run: yamllint -s -f github .
