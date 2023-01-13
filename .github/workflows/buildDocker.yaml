@@ -1,7 +1,7 @@
 ---
 name: Build Gradle Docker YAML
 
-on: # yamllint disable-line rule:truthy
+"on":
   workflow_call:
     inputs:
       subfolder:

@@ -13,6 +13,9 @@ on: # yamllint disable-line rule:truthy
         description: "Name of the created branch"
         value: ${{ jobs.create-branch.outputs.outputName }}
 
+env:
+  GITHUB-MAIL: 41898282+github-actions[bot]@users.noreply.github.com
+
 jobs:
   create-branch:
     runs-on: ubuntu-22.04
@@ -36,7 +39,7 @@ jobs:
       - name: create new Branch
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "$GITHUB_MAIL"
           git checkout -b update-branch-${{ github.run_id }}
 
       - run: cd ${{ inputs.subfolder }} && npm install -S
@@ -67,4 +70,4 @@ jobs:
           label: update
 
       - id: outputbranchname
-        run: echo branchname=update-branch-${{ github.run_id }} >> $GITHUB_OUTPUT
+        run: echo branchname=update-branch-${{github.run_id}} >> $GITHUB_OUTPUT
