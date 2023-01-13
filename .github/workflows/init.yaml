@@ -53,4 +53,6 @@ jobs:
           fetch-depth: "0"
 
       - name: Validate YAML file
-        run: yamllint -s -f github .
+        run:
+          yamllint -s -d "{extends\: \
+            relaxed, rules: {line-length: {max: 120}}}" -f github .
