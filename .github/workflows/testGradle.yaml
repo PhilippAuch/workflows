@@ -34,4 +34,4 @@ jobs:
           distribution: 'corretto'
 
       - name: gradle clean test
-        run: ${{ inputs.subfolder }}gradlew -p ${{ inputs.subfolder }} clean test
+        run: ${{inputs.subfolder}}gradlew -p ${{inputs.subfolder}} clean test
