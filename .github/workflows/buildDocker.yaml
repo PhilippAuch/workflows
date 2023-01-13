@@ -19,6 +19,9 @@ on:
 env:
   REGISTRY: ghcr.io
 
+permissions:
+  packages: write
+
 jobs:
   docker-build:
     runs-on: ubuntu-22.04
