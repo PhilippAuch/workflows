@@ -106,12 +106,12 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
   image-scanning:
     runs-on: ubuntu-22.04
-    needs: docker-build
+    needs: docker-push
     permissions:
-      packages: write
-      contents: read
+      packages: read
 
     steps:
       - name: Scan for vulnerabilities
