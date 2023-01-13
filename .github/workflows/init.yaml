@@ -9,7 +9,6 @@ on:
         type: string
         default: ${{ github.ref }}
   push:
-  pull_request:
 
 env:
   REGISTRY: ghcr.io
