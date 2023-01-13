@@ -1,7 +1,7 @@
 ---
 name: Run Tests with Gradle
 
-"on":
+on:
   workflow_call:
     inputs:
       subfolder:

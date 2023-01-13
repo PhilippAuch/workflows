@@ -1,7 +1,7 @@
 ---
 name: Deploy Template YAML
 
-"on":
+on:
   workflow_call:
     inputs:
       subfolder:
@@ -16,10 +16,6 @@ name: Deploy Template YAML
 
 env:
   REGISTRY: ghcr.io
-  DEPLOY: ${{ (((github.event_name == 'push' ||
-    github.event_name == 'workflow_dispatch')
-    && github.ref == 'refs/heads/main')
-    || github.event_name == 'schedule') }}
 
 jobs:
   check-files:
@@ -63,7 +59,7 @@ jobs:
   apply-to-k8s:
     runs-on: ubuntu-22.04
     needs: check-files
-    if: ${{env.DEPLOY}}
+    if: ${{(((github.event_name=='push'||github.event_name=='workflow_dispatch')&& github.ref=='refs/heads/main')||github.event_name=='schedule') }}
 
     steps:
       - name: Checkout repository

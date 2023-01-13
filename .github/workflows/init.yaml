@@ -1,7 +1,7 @@
 ---
 name: Initialization
 
-"on":
+on:
   workflow_call:
     inputs:
       branch-name:
@@ -52,7 +52,8 @@ jobs:
           ref: ${{ inputs.branch-name }}
           fetch-depth: "0"
 
+      - name: Download custom yaml rules
+        run: curl https://raw.githubusercontent.com/PhilippAuch/workflows/main/rules.yaml -o ./rules.yaml
+
       - name: Validate YAML file
-        run:
-          yamllint -s -d "{extends\: \
-            relaxed, rules: {line-length: {max: 120}}}" -f github .
+        run: yamllint -s -c ./rules.yaml -f github .
