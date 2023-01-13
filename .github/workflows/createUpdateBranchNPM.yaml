@@ -1,7 +1,7 @@
 ---
 name: Create Update Branch NPM
 
-on: # yamllint disable-line rule:truthy
+"on":
   workflow_call:
     inputs:
       subfolder:
