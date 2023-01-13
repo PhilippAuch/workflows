@@ -45,13 +45,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: export IMAGE_NAME=${{github.repository}}${{inputs.imageNameAddon}}
-
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4.1.1
         with:
-          images: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}
+          images: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}
           tags: |
             type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
 
@@ -90,13 +88,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: export IMAGE_NAME=${{github.repository}}${{inputs.imageNameAddon}}
-
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4.1.1
         with:
-          images: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}
+          images: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}
           tags: |
             type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
 
