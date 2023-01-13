@@ -21,6 +21,7 @@ env:
 
 permissions:
   packages: write
+  contents: read
 
 jobs:
   docker-build:
@@ -68,6 +69,7 @@ jobs:
     needs: docker-build
     permissions:
       packages: write
+      contents: read
 
     steps:
       - name: Checkout repository
