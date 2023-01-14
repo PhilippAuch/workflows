@@ -114,6 +114,7 @@ jobs:
     permissions:
       packages: read
       contents: read
+      security-events: write
 
     steps:
       - name: Checkout repository
