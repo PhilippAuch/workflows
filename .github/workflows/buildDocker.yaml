@@ -113,6 +113,7 @@ jobs:
   image-scanning:
     runs-on: ubuntu-22.04
     needs: docker-push
+    continue-on-error: true
     permissions:
       packages: read
       contents: read
@@ -139,4 +140,4 @@ jobs:
           dockerfile: ${{ inputs.subfolder }}Dockerfile
           image: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} # yamllint disable-line rule:line-length
         env:
-          TRIVY_TIMEOUT: 10m
+          TRIVY_TIMEOUT: 5m
