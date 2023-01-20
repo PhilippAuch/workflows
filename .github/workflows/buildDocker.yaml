@@ -111,6 +111,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   image-scanning:
+    if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
     runs-on: ubuntu-22.04
     needs: docker-push
     continue-on-error: true
