@@ -13,7 +13,6 @@ on:
         required: true
       KUBE_PULL_SECRET:
         required: false
-        default: ''
 
 env:
   REGISTRY: ghcr.io
