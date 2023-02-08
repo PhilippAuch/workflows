@@ -12,7 +12,8 @@ on:
       KUBE_CONFIG_DATA:
         required: true
       KUBE_PULL_SECRET:
-        required: true
+        required: false
+        default: "UNUSED"
 
 env:
   REGISTRY: ghcr.io
@@ -41,13 +42,17 @@ jobs:
           expandWithJobEnv: 'true'
           export: 'true'
 
-      - name: Replace ENV variables
-        run: |
+      - name: Provide pullsecret
+        if: ${{ secrets.KUBE_PULL_SECRET !== "UNUSED" }}
+        run: | 
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
           export GITHUB_ACTOR=PhilippAuch
           export AUTH_ENCODED=$(echo $GITHUB_ACTOR:$GITHUB_TOKEN | base64 -w 0)
           cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
           export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
+
+      - name: Replace ENV variables
+        run: |
           cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
       - name: Validate files
@@ -81,13 +86,17 @@ jobs:
           expandWithJobEnv: 'true'
           export: 'true'
 
-      - name: Replace ENV variables
+      - name: Provide pullsecret
+        if: ${{ secrets.KUBE_PULL_SECRET !== "UNUSED" }}
         run: |
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
           export GITHUB_ACTOR=PhilippAuch
           export AUTH_ENCODED=$(echo $GITHUB_ACTOR:$GITHUB_TOKEN | base64 -w 0)
           cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
           export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
+
+      - name: Replace ENV variables
+        run: |
           cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
       - name: Trigger deploy
