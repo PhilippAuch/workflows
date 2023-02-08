@@ -13,7 +13,7 @@ on:
         required: true
       KUBE_PULL_SECRET:
         required: false
-        default: "UNUSED"
+        default: ''
 
 env:
   REGISTRY: ghcr.io
@@ -42,9 +42,19 @@ jobs:
           expandWithJobEnv: 'true'
           export: 'true'
 
-      - name: Provide pullsecret
-        if: ${{ secrets.KUBE_PULL_SECRET !== "UNUSED" }}
-        run: | 
+      - name: Check for Secret availability
+        id: secret-check
+        shell: bash
+        run: |
+          if [ "${{ secrets.KUBE_PULL_SECRET }}" != '' ]; then
+            echo "available=true" >> $GITHUB_OUTPUT;
+          else
+            echo "available=false" >> $GITHUB_OUTPUT;
+          fi
+
+      - name: Provide pull secret
+        if: ${{ steps.secret-check.outputs.available == 'true' }}
+        run: |
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
           export GITHUB_ACTOR=PhilippAuch
           export AUTH_ENCODED=$(echo $GITHUB_ACTOR:$GITHUB_TOKEN | base64 -w 0)
@@ -86,8 +96,18 @@ jobs:
           expandWithJobEnv: 'true'
           export: 'true'
 
-      - name: Provide pullsecret
-        if: ${{ secrets.KUBE_PULL_SECRET !== "UNUSED" }}
+      - name: Check for Secret availability
+        id: secret-check
+        shell: bash
+        run: |
+          if [ "${{ secrets.KUBE_PULL_SECRET }}" != '' ]; then
+            echo "available=true" >> $GITHUB_OUTPUT;
+          else
+            echo "available=false" >> $GITHUB_OUTPUT;
+          fi
+
+      - name: Provide pull secret
+        if: ${{ steps.secret-check.outputs.available == 'true' }}
         run: |
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
           export GITHUB_ACTOR=PhilippAuch
