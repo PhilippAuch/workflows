@@ -70,6 +70,9 @@ jobs:
           strict: true
           files: ${{ inputs.subfolder }}filled/
 
+      - name: Debug log all filled yamls
+        run: tail -n +1 ${{ inputs.subfolder }}filled/*.yaml
+
       - name: Trigger deploy
         uses: Consensys/kubernetes-action@master
         if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
