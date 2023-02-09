@@ -59,6 +59,7 @@ jobs:
           export AUTH_ENCODED=$(echo $GITHUB_ACTOR:$GITHUB_TOKEN | base64 -w 0)
           cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
           export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
+          echo $PULL_SECRET
 
       - name: Replace ENV variables
         run: |
