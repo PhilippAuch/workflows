@@ -18,7 +18,7 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  check-files:
+  check-files-and-deploy:
     runs-on: ubuntu-22.04
 
     steps:
@@ -70,56 +70,9 @@ jobs:
           strict: true
           files: ${{ inputs.subfolder }}filled/
 
-  apply-to-k8s:
-    runs-on: ubuntu-22.04
-    needs: check-files
-    if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3.3.0
-        with:
-          fetch-depth: "0"
-
-      - name: Check .env file existence
-        id: check_files
-        uses: andstor/file-existence-action@v2.0.0
-        with:
-          files: ".env"
-
-      - uses: cardinalby/export-env-action@2.1.0
-        if: steps.check_files.outputs.files_exists == 'true'
-        with:
-          envFile: '.env'
-          expand: 'true'
-          expandWithJobEnv: 'true'
-          export: 'true'
-
-      - name: Check for Secret availability
-        id: secret-check
-        shell: bash
-        run: |
-          if [ "${{ secrets.KUBE_PULL_SECRET }}" != '' ]; then
-            echo "available=true" >> $GITHUB_OUTPUT;
-          else
-            echo "available=false" >> $GITHUB_OUTPUT;
-          fi
-
-      - name: Provide pull secret
-        if: ${{ steps.secret-check.outputs.available == 'true' }}
-        run: |
-          export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
-          export GITHUB_ACTOR=PhilippAuch
-          export AUTH_ENCODED=$(echo $GITHUB_ACTOR:$GITHUB_TOKEN | base64 -w 0)
-          cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
-          export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
-
-      - name: Replace ENV variables
-        run: |
-          cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
-
       - name: Trigger deploy
         uses: Consensys/kubernetes-action@master
+        if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:

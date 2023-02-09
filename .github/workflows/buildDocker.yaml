@@ -25,7 +25,10 @@ permissions:
   contents: read
 
 jobs:
-  docker-build:
+  docker-build-and-push:
+    permissions:
+      packages: write
+      contents: read
     runs-on: ubuntu-22.04
 
     steps:
@@ -60,55 +63,13 @@ jobs:
           file: ${{ inputs.subfolder }}Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  docker-push:
-    runs-on: ubuntu-22.04
-    needs: docker-build
-    permissions:
-      packages: write
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3.3.0
-        with:
-          ref: ${{ inputs.branch-name }}
-          fetch-depth: "0"
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.4.0
-
-      - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v2.1.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v4.3.0
-        with:
-          images: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}
-          tags: |
-            type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
-
-      - name: Push Docker image
-        uses: docker/build-push-action@v4.0.0
-        with:
-          context: ${{ inputs.subfolder }}
-          file: ${{ inputs.subfolder }}Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   image-scanning:
-    if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+    # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+    if: false
     runs-on: ubuntu-22.04
     needs: docker-push
     continue-on-error: true
