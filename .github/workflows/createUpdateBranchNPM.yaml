@@ -60,7 +60,7 @@ jobs:
           git push -u origin update-branch-${{ github.run_id }}
 
       - name: create PR
-        uses: devops-infra/action-pull-request@v0.5.3
+        uses: devops-infra/action-pull-request@v0.5.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: update-branch-${{ github.run_id }}
