@@ -57,6 +57,8 @@ jobs:
         uses: docker/metadata-action@v4.3.0
         with:
           images: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}
+          flavor: |
+            latest=true
           tags: |
             type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
 
