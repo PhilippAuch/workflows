@@ -1,0 +1,51 @@
+---
+name: Analyze with sonar
+
+on:
+  workflow_call:
+    inputs:
+      subfolder:
+        required: false
+        type: string
+        default: "./"
+      branch-name:
+        required: false
+        type: string
+        default: ${{ github.ref }}
+      sonar-project-key:
+        required: true
+        type: string
+    secrets:
+      SONAR_TOKEN_SERVICE:
+        required: true
+
+jobs:
+  analyze:
+    if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.2.0
+        with:
+          ref: ${{ inputs.branch-name }}
+          fetch-depth: "0"
+
+      - name: Setup sonarqube
+        uses: warchant/setup-sonar-scanner@v4
+
+      - name: Run sonarqube
+        run: cd ${{inputs.subfolder}} && sonar-scanner
+          -Dsonar.sources=.
+          -Dsonar.projectKey=${{inputs.sonar-project-key}}
+          -Dsonar.host.url=https://sonarqube.philipp-auch.de
+          -Dsonar.login=${{ secrets.SONAR_TOKEN_SERVICE }}
+
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        with:
+          scanMetadataReportFile: ${{inputs.subfolder}}.scannerwork/report-task.txt
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_SERVICE }}
+          SONAR_HOST_URL: https://sonarqube.philipp-auch.de
