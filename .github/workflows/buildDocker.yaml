@@ -16,6 +16,10 @@ on:
         required: false
         type: string
         default: ${{ github.ref }}
+      platforms:
+        required: false
+        type: string
+        default: 'linux/amd64'
 
 env:
   REGISTRY: ghcr.io
@@ -66,7 +70,7 @@ jobs:
         uses: docker/build-push-action@v4.0.0
         with:
           context: ${{ inputs.subfolder }}
-          platforms: linux/amd64,linux/arm64/v8
+          platforms: ${{ inputs.platforms }}
           file: ${{ inputs.subfolder }}Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -74,8 +78,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  image-scanning:
-    # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+  image-scanning: # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
     if: false
     runs-on: ubuntu-22.04
     needs: docker-build-and-push
