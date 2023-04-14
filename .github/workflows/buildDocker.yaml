@@ -78,6 +78,7 @@ jobs:
             latest=true
           tags: |
             type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
+            type=semver,pattern={{version}}
 
       - name: Build Docker image
         uses: docker/build-push-action@v4.0.0
