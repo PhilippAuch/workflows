@@ -42,28 +42,49 @@ jobs:
           node-version: '19.x'
 
       - name: Install dependencies
-        working-directory: ${{ inputs.subfolder }}
-        run: npm ci
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 2
+          command: cd ${{ inputs.subfolder }} && npm ci
 
       - name: Install Playwright Browsers
-        working-directory: ${{ inputs.subfolder }}
-        run: npx playwright install --with-deps
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 2
+          command: cd ${{ inputs.subfolder }} && npx playwright install --with-deps
 
       - name: Pull docker images
-        run: docker-compose -f ${{ inputs.docker-compose-file }} pull
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          command: docker-compose -f ${{ inputs.docker-compose-file }} pull
 
       - name: Start docker images
-        run: docker-compose -f ${{ inputs.docker-compose-file }} up -d
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: docker-compose -f ${{ inputs.docker-compose-file }} up -d
 
       - name: Wait 60s for startup
         run: sleep 60
 
       - name: Run Playwright tests
-        working-directory: ${{ inputs.subfolder }}
-        run: npx playwright test
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          command: cd ${{ inputs.subfolder }} && npx playwright test
 
       - name: Stop docker
-        run: docker-compose -f ${{ inputs.docker-compose-file }} down
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: docker-compose -f ${{ inputs.docker-compose-file }} down
 
       - uses: actions/upload-artifact@v3
         if: always()

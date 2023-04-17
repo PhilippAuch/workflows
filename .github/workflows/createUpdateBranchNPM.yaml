@@ -37,27 +37,42 @@ jobs:
           node-version: "18.x"
 
       - name: create new Branch
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "$GITHUB_MAIL"
-          git checkout -b update-branch-${{ github.run_id }}
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          command: |
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "$GITHUB_MAIL"
+            git checkout -b update-branch-${{ github.run_id }}
 
-      - run: cd ${{ inputs.subfolder }} && npm install -S
-      - run: cd ${{ inputs.subfolder }} && npm outdated || true
-      - run: cd ${{ inputs.subfolder }} && npm update -S
-      - run: cd ${{ inputs.subfolder }} && npm install -S
-      - run: cd ${{ inputs.subfolder }} && npm outdated || true
-      - run: cd ${{ inputs.subfolder }} && npx npm-check-updates -u --peer
-      - run: cd ${{ inputs.subfolder }} && npm install -S
-      - run: cd ${{ inputs.subfolder }} && npm update -S
-      - run: cd ${{ inputs.subfolder }} && npm install -S
+      - name: do the npm update
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 2
+          command: |
+            cd ${{ inputs.subfolder }}
+            npm install -S
+            npm outdated || true
+            npm update -S
+            npm install -S
+            npm outdated || true
+            npx npm-check-updates -u --peer
+            npm install -S
+            npm update -S
+            npm install -S
 
       - name: git add and push to remote
-        run: |
-          git push -u origin update-branch-${{ github.run_id }}
-          git add -A
-          git commit -m "Update dependencies"
-          git push -u origin update-branch-${{ github.run_id }}
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          command: |
+            git push -u origin update-branch-${{ github.run_id }}
+            git add -A
+            git commit -m "Update dependencies"
+            git push -u origin update-branch-${{ github.run_id }}
 
       - name: create PR
         uses: devops-infra/action-pull-request@v0.5.5

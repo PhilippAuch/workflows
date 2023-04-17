@@ -34,4 +34,8 @@ jobs:
           distribution: 'corretto'
 
       - name: gradle clean test
-        run: ${{inputs.subfolder}}gradlew -p ${{inputs.subfolder}} clean test
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: ${{inputs.subfolder}}gradlew -p ${{inputs.subfolder}} clean test
