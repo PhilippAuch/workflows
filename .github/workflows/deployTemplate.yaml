@@ -68,10 +68,10 @@ jobs:
           cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
       - name: Validate files
-        uses: instrumenta/kubeval-action@master
+        uses: docker://ghcr.io/yannh/kubeconform:master
         with:
-          strict: true
-          files: ${{ inputs.subfolder }}filled/
+          entrypoint: '/kubeconform'
+          args: "-summary -output json ${{ inputs.subfolder }}filled/"
 
       - name: Debug log all filled yamls
         run: tail -n +1 ${{ inputs.subfolder }}filled/*.yaml
