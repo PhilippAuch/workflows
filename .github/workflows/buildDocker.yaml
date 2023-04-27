@@ -1,5 +1,5 @@
 ---
-name: Build Gradle Docker YAML
+name: Build Docker YAML
 
 on:
   workflow_call:
