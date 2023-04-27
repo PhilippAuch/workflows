@@ -1,127 +1,127 @@
 ---
-name: Build Docker Workflow
+name: Build Gradle Docker YAML
 
 on:
-    workflow_call:
-        inputs:
-            subfolder:
-                required: false
-                type: string
-                default: "./"
-            imageNameAddon:
-                required: false
-                type: string
-                default: ""
-            branch-name:
-                required: false
-                type: string
-                default: ${{ github.ref }}
-            platforms:
-                required: false
-                type: string
-                default: 'linux/amd64'
+  workflow_call:
+    inputs:
+      subfolder:
+        required: false
+        type: string
+        default: "./"
+      imageNameAddon:
+        required: false
+        type: string
+        default: ""
+      branch-name:
+        required: false
+        type: string
+        default: ${{ github.ref }}
+      platforms:
+        required: false
+        type: string
+        default: 'linux/amd64'
 
 env:
-    REGISTRY: ghcr.io
+  REGISTRY: ghcr.io
 
 permissions:
-    packages: write
-    contents: read
+  packages: write
+  contents: read
 
 jobs:
-    docker-build-and-push:
-        permissions:
-          packages: write
-          contents: read
-        runs-on: ubuntu-22.04
+  docker-build-and-push:
+    permissions:
+      packages: write
+      contents: read
+    runs-on: ubuntu-22.04
 
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v3.5.2
-            with:
-              ref: ${{ inputs.branch-name }}
-              fetch-depth: "0"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+        with:
+          ref: ${{ inputs.branch-name }}
+          fetch-depth: "0"
 
-          - name: Show space
-            run: df -h
+      - name: Show space
+        run: df -h
 
-          - name: Free up space
-            run: |
-              sudo rm -rf /usr/share/dotnet \
-              sudo rm -rf /opt/ghc \
-              sudo rm -rf "/usr/local/share/boost" \
-              sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - name: Free up space
+        run: |
+          sudo rm -rf /usr/share/dotnet \
+          sudo rm -rf /opt/ghc \
+          sudo rm -rf "/usr/local/share/boost" \
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
-          - name: Show space
-            run: df -h
+      - name: Show space
+        run: df -h
 
-          - name: Set up QEMU
-            uses: docker/setup-qemu-action@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
 
-          - name: Set up Docker Buildx
-            id: buildx
-            uses: docker/setup-buildx-action@v2.5.0
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2.5.0
 
-          - name: Log into registry ${{ env.REGISTRY }}
-            uses: docker/login-action@v2.1.0
-            with:
-                registry: ${{ env.REGISTRY }}
-                username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-          - name: Extract Docker metadata
-            id: meta
-            uses: docker/metadata-action@v4.4.0
-            with:
-            images: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}
-            flavor: |
-                latest=true
-            tags: |
-                type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
-                type=semver,pattern={{version}}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4.4.0
+        with:
+          images: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}
+          flavor: |
+            latest=true
+          tags: |
+            type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
+            type=semver,pattern={{version}}
 
-          - name: Build Docker image
-            uses: docker/build-push-action@v4.0.0
-            with:
-              context: ${{ inputs.subfolder }}
-              platforms: ${{ inputs.platforms }}
-              file: ${{ inputs.subfolder }}Dockerfile
-              tags: ${{ steps.meta.outputs.tags }}
-              labels: ${{ steps.meta.outputs.labels }}
-              push: true
-              cache-from: type=gha
-              cache-to: type=gha,mode=max
+      - name: Build Docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: ${{ inputs.subfolder }}
+          platforms: ${{ inputs.platforms }}
+          file: ${{ inputs.subfolder }}Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-    image-scanning:
-        if: false
-        # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
-        runs-on: ubuntu-22.04
-        needs: docker-build-and-push
-        continue-on-error: true
-        permissions:
-            packages: read
-            contents: read
+  image-scanning:
+    if: false
+    # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-22.04
+    needs: docker-build-and-push
+    continue-on-error: true
+    permissions:
+      packages: read
+      contents: read
 
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v3.5.2
-            with:
-                ref: ${{ inputs.branch-name }}
-                fetch-depth: "0"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.2
+        with:
+          ref: ${{ inputs.branch-name }}
+          fetch-depth: "0"
 
-          - name: Log into registry ${{ env.REGISTRY }}
-            uses: docker/login-action@v2.1.0
-            with:
-                registry: ${{ env.REGISTRY }}
-                username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-          - name: Scan for vulnerabilities
-            id: scan
-            uses: crazy-max/ghaction-container-scan@v2.1.0
-            with:
-                annotations: true
-                dockerfile: ${{ inputs.subfolder }}Dockerfile
-                image: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} # yamllint disable-line rule:line-length
-            env:
-                TRIVY_TIMEOUT: 5m
+      - name: Scan for vulnerabilities
+        id: scan
+        uses: crazy-max/ghaction-container-scan@v2.1.0
+        with:
+          annotations: true
+          dockerfile: ${{ inputs.subfolder }}Dockerfile
+          image: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} # yamllint disable-line rule:line-length
+        env:
+          TRIVY_TIMEOUT: 5m
