@@ -40,11 +40,11 @@ jobs:
           timeout_minutes: 5
           max_attempts: 3
           command: >-
-            cd ${{inputs.subfolder}} && sonar-scanner
-              -Dsonar.sources=.
-              -Dsonar.projectKey=${{inputs.sonar-project-key}}
-              -Dsonar.host.url=https://sonarqube.philipp-auch.de
-              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            cd ${{inputs.subfolder}} && sonar-scanner \
+            -Dsonar.sources=. \
+            -Dsonar.projectKey=${{inputs.sonar-project-key}} \
+            -Dsonar.host.url=https://sonarqube.philipp-auch.de \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@master
