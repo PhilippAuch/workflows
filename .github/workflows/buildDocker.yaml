@@ -8,6 +8,10 @@ on:
         required: false
         type: string
         default: "./"
+      dockerfileName:
+        required: false
+        type: string
+        default: "Dockerfile"
       imageNameAddon:
         required: false
         type: string
@@ -85,7 +89,7 @@ jobs:
         with:
           context: ${{ inputs.subfolder }}
           platforms: ${{ inputs.platforms }}
-          file: ${{ inputs.subfolder }}Dockerfile
+          file: ${{ inputs.subfolder }}${{ inputs.dockerfileName }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
