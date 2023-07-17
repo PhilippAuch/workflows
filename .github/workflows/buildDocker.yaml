@@ -23,7 +23,11 @@ on:
       platforms:
         required: false
         type: string
-        default: 'linux/amd64'
+        default: "linux/amd64"
+      testImage:
+        required: false
+        type: boolean
+        default: false
 
 env:
   REGISTRY: ghcr.io
@@ -129,3 +133,23 @@ jobs:
           image: ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} # yamllint disable-line rule:line-length
         env:
           TRIVY_TIMEOUT: 5m
+
+  test-image:
+    if: ${{ inputs.testImage }}
+    runs-on: ubuntu-22.04
+    needs: docker-build-and-push
+    permissions:
+      packages: read
+      contents: read
+
+    steps:
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Startup image
+        run: |
+          docker run --rm ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
