@@ -157,4 +157,6 @@ jobs:
       - name: Startup image
         timeout-minutes: 1
         run: |
-          docker run --rm --platform=linux/amd64 --entrypoint=/bin/sh ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} -c "${{inputs.testCommand}}"
+          docker run --rm --platform=linux/amd64 --entrypoint=/bin/sh \
+            ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} \
+            -c "${{inputs.testCommand}}"
