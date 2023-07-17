@@ -152,4 +152,4 @@ jobs:
 
       - name: Startup image
         run: |
-          docker run --rm ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
+          docker run --rm --platform=linux/amd64 ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
