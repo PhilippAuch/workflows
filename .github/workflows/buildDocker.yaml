@@ -28,6 +28,10 @@ on:
         required: false
         type: boolean
         default: false
+      testCommand:
+        required: false
+        type: string
+        default: "/bin/sh"
 
 env:
   REGISTRY: ghcr.io
@@ -151,5 +155,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Startup image
+        timeout-minutes: 1
         run: |
-          docker run --rm --platform=linux/amd64 ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
+          docker run --rm --platform=linux/amd64 --entrypoint=/bin/sh ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} -c "${{inputs.testCommand}}"
