@@ -54,11 +54,14 @@ jobs:
       - name: Provide pull secret
         if: ${{ steps.secret-check.outputs.available == 'true' }}
         run: |
+          rm ${{ inputs.subfolder }}pullsecret.yaml
+          rm ${{ inputs.subfolder }}pullsecret.json
+          curl https://raw.githubusercontent.com/PhilippAuch/workflows/main/pullsecret.txt -o ${{ inputs.subfolder }}pullsecret.txt
           export REGISTRY_HOST=${{ env.REGISTRY }}
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
           export GITHUB_ACTOR=PhilippAuch
           export AUTH_ENCODED=$(echo $GITHUB_ACTOR:$GITHUB_TOKEN | base64 -w 0)
-          cat ${{ inputs.subfolder }}pullsecret.json | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
+          cat ${{ inputs.subfolder }}pullsecret.txt | envsubst > ${{ inputs.subfolder }}pullsecret_filled.json
           export PULL_SECRET=$(cat ${{ inputs.subfolder }}pullsecret_filled.json | base64 -w 0)
           echo PULL_SECRET
           echo $PULL_SECRET
