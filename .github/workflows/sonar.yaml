@@ -44,7 +44,8 @@ jobs:
                                           -Dsonar.projectKey=${{inputs.sonar-project-key}} \
                                           -Dsonar.sources=. \
                                           -Dsonar.host.url=https://sonarqube.philipp-auch.de/ \
-                                          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+                                          -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+                                          -Dsonar.exclusions=test/*, kubernetes/*
 
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@master
