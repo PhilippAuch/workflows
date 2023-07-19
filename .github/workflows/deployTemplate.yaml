@@ -54,8 +54,8 @@ jobs:
       - name: Provide pull secret
         if: ${{ steps.secret-check.outputs.available == 'true' }}
         run: |
-          rm ${{ inputs.subfolder }}pullsecret.yaml
-          rm ${{ inputs.subfolder }}pullsecret.json
+          rm --force --verbose ${{ inputs.subfolder }}pullsecret.yaml
+          rm --force --verbose ${{ inputs.subfolder }}pullsecret.json
           curl https://raw.githubusercontent.com/PhilippAuch/workflows/main/pullsecret.txt -o ${{ inputs.subfolder }}pullsecret.txt
           export REGISTRY_HOST=${{ env.REGISTRY }}
           export GITHUB_TOKEN=${{ secrets.KUBE_PULL_SECRET }}
