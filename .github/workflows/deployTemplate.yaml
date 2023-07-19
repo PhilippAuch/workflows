@@ -71,14 +71,14 @@ jobs:
         run: |
           cd ${{ inputs.subfolder }} && mkdir filled && for f in *.yaml; do envsubst < $f > filled/$f ; done
 
+      - name: Debug log all filled yamls
+        run: tail -n +1 ${{ inputs.subfolder }}filled/*.yaml
+
       - name: Validate files
         uses: docker://ghcr.io/yannh/kubeconform:master
         with:
           entrypoint: "/kubeconform"
           args: "-summary -skip AlertmanagerConfig -output json ${{ inputs.subfolder }}filled/"
-
-      - name: Debug log all filled yamls
-        run: tail -n +1 ${{ inputs.subfolder }}filled/*.yaml
 
       - name: Trigger deploy
         uses: actions-hub/kubectl@v1.27.3
