@@ -7,7 +7,7 @@ on:
       subfolder:
         required: false
         type: string
-        default: "./"
+        default: './'
     secrets:
       KUBE_CONFIG_DATA:
         required: true
@@ -25,21 +25,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.5.3
         with:
-          fetch-depth: "0"
+          fetch-depth: '0'
 
       - name: Check .env file existence
         id: check_files
         uses: andstor/file-existence-action@v2.0.0
         with:
-          files: ".env"
+          files: '.env'
 
       - uses: cardinalby/export-env-action@2.2.0
         if: steps.check_files.outputs.files_exists == 'true'
         with:
-          envFile: ".env"
-          expand: "true"
-          expandWithJobEnv: "true"
-          export: "true"
+          envFile: '.env'
+          expand: 'true'
+          expandWithJobEnv: 'true'
+          export: 'true'
 
       - name: Check for Secret availability
         id: secret-check
@@ -77,12 +77,12 @@ jobs:
       - name: Validate files
         uses: docker://ghcr.io/yannh/kubeconform:master
         with:
-          entrypoint: "/kubeconform"
-          args: "-summary -skip AlertmanagerConfig -output json ${{ inputs.subfolder }}filled/"
+          entrypoint: '/kubeconform'
+          args: '-summary -skip AlertmanagerConfig -output json ${{ inputs.subfolder }}filled/'
 
       - name: Trigger deploy
         uses: actions-hub/kubectl@v1.27.3
-        if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+        if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
