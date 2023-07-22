@@ -6,14 +6,14 @@ https://docs.github.com/en/actions/using-workflows/reusing-workflows
 
 ### philipp-auch-de
 
-- Jiramanager [![Image Publish](https://github.com/philipp-auch-de/jiramanager/actions/workflows/image-publish.yml/badge.svg?branch=main)](https://github.com/philipp-auch-de/jiramanager/actions/workflows/image-publish.yml)
+- Jiramanager [![Workflow](https://github.com/philipp-auch-de/jiramanager/actions/workflows/workflow.yaml/badge.svg?branch=main)](https://github.com/philipp-auch-de/jiramanager/actions/workflows/workflow.yaml)
 - Dashboard [![Image Publish](https://github.com/philipp-auch-de/dashboard/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/dashboard/actions/workflows/image-publish.yml)
 - cert-manager [![Image Publish](https://github.com/philipp-auch-de/cert-manager/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/cert-manager/actions/workflows/image-publish.yml)
 - landing [![Image Publish](https://github.com/philipp-auch-de/landing/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/landing/actions/workflows/image-publish.yml)
 - logging [![deploy](https://github.com/philipp-auch-de/logging/actions/workflows/deploy.yml/badge.svg)](https://github.com/philipp-auch-de/logging/actions/workflows/deploy.yml)
 - camunda [![Workflow](https://github.com/philipp-auch-de/camunda/actions/workflows/workflow.yaml/badge.svg)](https://github.com/philipp-auch-de/camunda/actions/workflows/workflow.yaml)
 - echoservice [![Image Publish](https://github.com/philipp-auch-de/echoservice/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/echoservice/actions/workflows/image-publish.yml)
-- scat-frontend-contact [![Workflow](https://github.com/philipp-auch-de/scat-frontend-contact/actions/workflows/workflow.yml/badge.svg)](https://github.com/philipp-auch-de/scat-frontend-contact/actions/workflows/workflow.yml)
+- scat-frontend-contact [![Workflow](https://github.com/philipp-auch-de/scat-frontend-contact/actions/workflows/workflow.yaml/badge.svg)](https://github.com/philipp-auch-de/scat-frontend-contact/actions/workflows/workflow.yaml)
 - scat-frontend-network [![Workflow](https://github.com/philipp-auch-de/scat-frontend-network/actions/workflows/workflow.yml/badge.svg)](https://github.com/philipp-auch-de/scat-frontend-network/actions/workflows/workflow.yml)
 - scat-frontend-todo [![Workflow](https://github.com/philipp-auch-de/scat-frontend-todo/actions/workflows/workflow.yml/badge.svg)](https://github.com/philipp-auch-de/scat-frontend-todo/actions/workflows/workflow.yml)
 - scat-service-event [![Workflow](https://github.com/philipp-auch-de/scat-service-event/actions/workflows/workflow.yml/badge.svg)](https://github.com/philipp-auch-de/scat-service-event/actions/workflows/workflow.yml)
