@@ -6,7 +6,7 @@ extends: default
 
 rules:
   line-length:
-    max: 140
+    max: 150
   comments:
     min-spaces-from-content: 1
   truthy:
