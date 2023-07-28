@@ -7,10 +7,10 @@ on:
       subfolder:
         required: false
         type: string
-        default: "./"
+        default: './'
     outputs:
       branchName:
-        description: "Name of the created branch"
+        description: 'Name of the created branch'
         value: ${{ jobs.create-branch.outputs.outputName }}
 
 env:
@@ -18,6 +18,7 @@ env:
 
 jobs:
   create-branch:
+    timeout-minutes: 60
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -30,11 +31,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.5.3
         with:
-          fetch-depth: "0"
+          fetch-depth: '0'
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: '18.x'
 
       - name: create new Branch
         uses: nick-fields/retry@v2.8.3
@@ -81,7 +82,7 @@ jobs:
           source_branch: update-branch-${{ github.run_id }}
           target_branch: main
           title: Update Frontend PR
-          body: "**Automated pull request**"
+          body: '**Automated pull request**'
           label: update
 
       - id: outputbranchname

@@ -7,7 +7,7 @@ on:
       subfolder:
         required: false
         type: string
-        default: "./"
+        default: './'
       branch-name:
         required: false
         type: string
@@ -22,13 +22,14 @@ env:
 jobs:
   playwright:
     runs-on: ubuntu-22.04
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.5.3
         with:
           ref: ${{ inputs.branch-name }}
-          fetch-depth: "0"
+          fetch-depth: '0'
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@v2.2.0

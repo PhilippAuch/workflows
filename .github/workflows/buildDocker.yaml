@@ -42,6 +42,7 @@ permissions:
 
 jobs:
   docker-build-and-push:
+    timeout-minutes: 60
     permissions:
       packages: write
       contents: read
@@ -109,6 +110,7 @@ jobs:
     # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
     runs-on: ubuntu-22.04
     needs: docker-build-and-push
+    timeout-minutes: 60
     continue-on-error: true
     permissions:
       packages: read
@@ -141,6 +143,7 @@ jobs:
   test-image:
     if: ${{ inputs.testImage }}
     runs-on: ubuntu-22.04
+    timeout-minutes: 60
     needs: docker-build-and-push
     permissions:
       packages: read
