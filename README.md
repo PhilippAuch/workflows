@@ -7,9 +7,9 @@ https://docs.github.com/en/actions/using-workflows/reusing-workflows
 ### philipp-auch-de
 
 - Jiramanager [![Workflow](https://github.com/philipp-auch-de/jiramanager/actions/workflows/workflow.yaml/badge.svg?branch=main)](https://github.com/philipp-auch-de/jiramanager/actions/workflows/workflow.yaml)
-- Dashboard [![Image Publish](https://github.com/philipp-auch-de/dashboard/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/dashboard/actions/workflows/image-publish.yml)
+- Dashboard [![Workflow](https://github.com/philipp-auch-de/dashboard/actions/workflows/workflow.yaml/badge.svg)](https://github.com/philipp-auch-de/dashboard/actions/workflows/workflow.yaml)
 - cert-manager [![Image Publish](https://github.com/philipp-auch-de/cert-manager/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/cert-manager/actions/workflows/image-publish.yml)
-- landing [![Image Publish](https://github.com/philipp-auch-de/landing/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/landing/actions/workflows/image-publish.yml)
+- landing [![Workflow](https://github.com/philipp-auch-de/landing/actions/workflows/workflow.yaml/badge.svg)](https://github.com/philipp-auch-de/landing/actions/workflows/workflow.yaml)
 - logging [![deploy](https://github.com/philipp-auch-de/logging/actions/workflows/deploy.yml/badge.svg)](https://github.com/philipp-auch-de/logging/actions/workflows/deploy.yml)
 - camunda [![Workflow](https://github.com/philipp-auch-de/camunda/actions/workflows/workflow.yaml/badge.svg)](https://github.com/philipp-auch-de/camunda/actions/workflows/workflow.yaml)
 - echoservice [![Image Publish](https://github.com/philipp-auch-de/echoservice/actions/workflows/image-publish.yml/badge.svg)](https://github.com/philipp-auch-de/echoservice/actions/workflows/image-publish.yml)
