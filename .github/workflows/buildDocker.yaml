@@ -16,6 +16,10 @@ on:
         required: false
         type: string
         default: ''
+      imageTag:
+        required: false
+        type: string
+        default: ''
       branch-name:
         required: false
         type: string
@@ -92,6 +96,7 @@ jobs:
           tags: |
             type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
             type=semver,pattern={{version}}
+            type=raw,value=${{inputs.imageTag}}
 
       - name: Build Docker image
         uses: docker/build-push-action@v4.1.1
