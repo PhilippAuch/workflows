@@ -137,7 +137,7 @@ jobs:
 
       - name: Scan for vulnerabilities
         id: scan
-        uses: crazy-max/ghaction-container-scan@v2.1.0
+        uses: crazy-max/ghaction-container-scan@v2.2.0
         with:
           annotations: true
           dockerfile: ${{ inputs.subfolder }}Dockerfile
