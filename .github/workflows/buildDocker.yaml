@@ -36,6 +36,9 @@ on:
         required: false
         type: string
         default: '/bin/sh'
+    secrets:
+      GH_SSH_PRIVATE:
+        required: false
 
 env:
   REGISTRY: ghcr.io
@@ -109,6 +112,8 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          ssh: |
+            default=${{ secrets.GH_SSH_PRIVATE }}
 
   image-scanning:
     if: false
