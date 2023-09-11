@@ -12,6 +12,9 @@ on:
         required: false
         type: string
         default: ${{ github.ref }}
+    secrets:
+      GH_SSH_PRIVATE:
+        required: false
 
 env:
   REGISTRY: ghcr.io
@@ -27,6 +30,13 @@ jobs:
         with:
           ref: ${{ inputs.branch-name }}
           fetch-depth: '0'
+
+      - uses: webfactory/ssh-agent@v0.7.0
+        env:
+          GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
+        if: env.GH_SSH != null
+        with:
+          ssh-private-key: ${{ secrets.GH_SSH_PRIVATE }}
 
       - uses: actions/setup-node@v3.8.1
         with:
