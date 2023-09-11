@@ -101,6 +101,13 @@ jobs:
             type=semver,pattern={{version}}
             type=raw,value=${{inputs.imageTag}}
 
+      - uses: webfactory/ssh-agent@v0.7.0
+        env:
+          GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
+        if: env.GH_SSH != null
+        with:
+          ssh-private-key: ${{ secrets.GH_SSH_PRIVATE }}
+
       - name: Build Docker image
         uses: docker/build-push-action@v4.2.1
         env:
@@ -115,7 +122,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           ssh: |
-            default=${{ env.GH_SSH }}
+            default=${{ env.SSH_AUTH_SOCK }}
 
   image-scanning:
     if: false
