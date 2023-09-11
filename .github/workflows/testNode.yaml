@@ -1,0 +1,48 @@
+---
+name: Run Tests with Node
+
+on:
+  workflow_call:
+    inputs:
+      subfolder:
+        required: false
+        type: string
+        default: './'
+      branch-name:
+        required: false
+        type: string
+        default: ${{ github.ref }}
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  node-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.3
+        with:
+          ref: ${{ inputs.branch-name }}
+          fetch-depth: '0'
+
+      - uses: actions/setup-node@v3.8.1
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: cd ${{ inputs.subfolder }} && npm install
+
+      - name: Run test
+        uses: nick-fields/retry@v2.8.3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: cd ${{ inputs.subfolder }} && npm run test
