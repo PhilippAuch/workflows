@@ -103,6 +103,8 @@ jobs:
 
       - name: Build Docker image
         uses: docker/build-push-action@v4.2.1
+        env:
+          GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
         with:
           context: ${{ inputs.subfolder }}
           platforms: ${{ inputs.platforms }}
@@ -113,7 +115,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           ssh: |
-            default=${{ secrets.GH_SSH_PRIVATE }}
+            default=${{ env.GH_SSH }}
 
   image-scanning:
     if: false
