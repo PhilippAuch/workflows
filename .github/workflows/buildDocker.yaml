@@ -108,10 +108,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.GH_SSH_PRIVATE }}
 
-      - name: Build Docker image
+      - name: Build Docker image with SSH
         uses: docker/build-push-action@v4.2.1
         env:
           GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
+        if: env.GH_SSH != null
         with:
           context: ${{ inputs.subfolder }}
           platforms: ${{ inputs.platforms }}
@@ -123,6 +124,21 @@ jobs:
           cache-to: type=gha,mode=max
           ssh: |
             default=${{ env.SSH_AUTH_SOCK }}
+
+      - name: Build Docker image without SSH
+        uses: docker/build-push-action@v4.2.1
+        env:
+          GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
+        if: env.GH_SSH == null
+        with:
+          context: ${{ inputs.subfolder }}
+          platforms: ${{ inputs.platforms }}
+          file: ${{ inputs.subfolder }}${{ inputs.dockerfileName }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   image-scanning:
     if: false
