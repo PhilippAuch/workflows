@@ -13,7 +13,7 @@ jobs:
   publish-release:
     timeout-minutes: 60
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name=='push'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.0.0
