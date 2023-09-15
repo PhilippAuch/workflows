@@ -22,6 +22,8 @@ on:
 jobs:
   analyze:
     timeout-minutes: 60
+    env:
+      SONAR: ${{ secrets.SONAR_TOKEN }}
     if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
     runs-on: ubuntu-22.04
 
@@ -37,6 +39,7 @@ jobs:
 
       - name: Run sonarqube
         uses: nick-fields/retry@v2.8.3
+        if: env.SONAR != null
         with:
           timeout_minutes: 5
           max_attempts: 3
@@ -50,6 +53,7 @@ jobs:
 
       - name: SonarQube Quality Gate check
         uses: sonarsource/sonarqube-quality-gate-action@master
+        if: env.SONAR != null
         timeout-minutes: 5
         with:
           scanMetadataReportFile: ${{inputs.subfolder}}.scannerwork/report-task.txt
