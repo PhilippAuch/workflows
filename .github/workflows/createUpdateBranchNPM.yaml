@@ -37,6 +37,7 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: create new Branch
         uses: nick-fields/retry@v2.8.3
