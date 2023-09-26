@@ -1,0 +1,10 @@
+---
+name: Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  init:
+    uses: PhilippAuch/workflows/.github/workflows/init.yaml@main
