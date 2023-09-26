@@ -8,7 +8,6 @@ on:
         required: false
         type: string
         default: ${{ github.ref }}
-  push:
 
 env:
   REGISTRY: ghcr.io
