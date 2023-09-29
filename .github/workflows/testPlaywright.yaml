@@ -45,28 +45,28 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 10
           max_attempts: 2
           command: cd ${{ inputs.subfolder }} && npm ci
 
       - name: Install Playwright Browsers
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 10
           max_attempts: 2
           command: cd ${{ inputs.subfolder }} && npx playwright install --with-deps
 
       - name: Pull docker images
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 2
           max_attempts: 3
           command: docker-compose -f ${{ inputs.docker-compose-file }} pull
 
       - name: Start docker images
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 10
           max_attempts: 3
@@ -76,14 +76,14 @@ jobs:
         run: sleep 60
 
       - name: Run Playwright tests
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 10
           max_attempts: 3
           command: cd ${{ inputs.subfolder }} && npx playwright test
 
       - name: Stop docker
-        uses: nick-fields/retry@v2.8.3
+        uses: nick-fields/retry@v2.9.0
         with:
           timeout_minutes: 5
           max_attempts: 3
