@@ -193,7 +193,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Startup image
-        timeout-minutes: 1
+        timeout-minutes: 20
         run: |
           docker run --rm --platform=linux/amd64 --entrypoint=/bin/sh \
             ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}} \
