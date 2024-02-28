@@ -2,7 +2,8 @@
 # This is my first, very own configuration file for yamllint!
 # It extends the default conf by adjusting some options.
 # To disable line length check add following comment
-# # yamllint disable-line rule:key-duplicates
+# # yamllint disable-line rule:line-length
+# see https://yamllint.readthedocs.io/en/stable/disable_with_comments.html
 
 extends: default
 
