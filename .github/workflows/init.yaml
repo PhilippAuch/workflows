@@ -43,7 +43,17 @@ jobs:
       - run: env
 
       - name: Download custom yaml rules
-        run: curl https://raw.githubusercontent.com/PhilippAuch/workflows/main/rules.yaml -o ./rules.yaml
+        uses: nick-fields/retry@v3.0.0
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: |
+            curl https://raw.githubusercontent.com/PhilippAuch/workflows/main/rules.yaml -o ./rules.yaml
 
       - name: Validate YAML file
-        run: yamllint -s -c ./rules.yaml -f github .
+        uses: nick-fields/retry@v3.0.0
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: |
+            yamllint -s -c ./rules.yaml -f github .
