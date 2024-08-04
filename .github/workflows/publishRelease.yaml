@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4.1.7
         with:
           fetch-depth: '0'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version and push tag
         uses: mathieudutour/github-tag-action@v6.2
@@ -45,6 +46,7 @@ jobs:
         with:
           fetch-depth: '0'
           ref: 'main'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Override GITHUB_ENV with new SHA
         id: vars
@@ -58,7 +60,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_sha: ${{ env.NEW_SHA }}
-          create_annotated_tag: true
           release_branches: main
           dry_run: false
 
