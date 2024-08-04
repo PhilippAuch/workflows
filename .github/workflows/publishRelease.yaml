@@ -38,16 +38,13 @@ jobs:
           user-name: build-githubaction
           merge-strategy: merge
 
-      - name: Wait 10 seconds
-        run: sleep 10
-
-      - name: Checkout repository
-        uses: actions/checkout@v4.1.7
-        with:
-          fetch-depth: '0'
-          ref: 'main'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Git pull & push
+        run: |
+          git pull
+          git push
+          git rev-parse main
+          git show
+          
       - name: Override GITHUB_ENV with new SHA
         id: vars
         run: |
