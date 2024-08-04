@@ -9,11 +9,11 @@ on:
         type: string
         default: './'
 
-jobs:
-  add-version-file:
+jobs:          
+  publish-release:
     timeout-minutes: 60
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.actor != 'build-githubaction'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.actor == 'build-githubaction'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.7
@@ -36,16 +36,6 @@ jobs:
           user-email: build@githubaction.com
           user-name: build-githubaction
           merge-strategy: merge
-          
-  publish-release:
-    timeout-minutes: 60
-    runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.actor == 'build-githubaction'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.1.7
-        with:
-          fetch-depth: '0'
 
       - name: Bump version and push tag
         uses: hennejg/github-tag-action@v4.4.0
@@ -53,6 +43,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: main
+          dry_run: false
 
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@v1.2.1
