@@ -37,6 +37,11 @@ jobs:
           user-name: build-githubaction
           merge-strategy: merge
 
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: '0'
+
       - name: Bump version and push tag
         uses: hennejg/github-tag-action@v4.4.0
         id: tagging
