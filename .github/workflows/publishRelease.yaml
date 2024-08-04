@@ -9,7 +9,7 @@ on:
         type: string
         default: './'
 
-jobs:          
+jobs:
   publish-release:
     timeout-minutes: 60
     runs-on: ubuntu-22.04
