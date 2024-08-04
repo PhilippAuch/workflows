@@ -21,7 +21,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Bump version and push tag
-        uses: hennejg/github-tag-action@v4.4.0
+        uses: mathieudutour/github-tag-action@v6.2
         id: tagging_dryrun
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,13 +50,14 @@ jobs:
         id: vars
         run: |
           calculatedSha=$(git rev-parse main)
-          echo "GITHUB_SHA=$calculatedSha" >> $GITHUB_ENV
+          echo "NEW_SHA=$calculatedSha" >> $GITHUB_ENV
 
       - name: Bump version and push tag
-        uses: hennejg/github-tag-action@v4.4.0
+        uses: mathieudutour/github-tag-action@v6.2
         id: tagging
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_sha: ${{ env.NEW_SHA }}
           release_branches: main
           dry_run: false
 
