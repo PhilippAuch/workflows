@@ -10,10 +10,37 @@ on:
         default: './'
 
 jobs:
+  add-version-file:
+    timeout-minutes: 60
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.actor != 'build-githubaction'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: '0'
+
+      - name: Bump version and push tag
+        uses: hennejg/github-tag-action@v4.4.0
+        id: tagging_dryrun
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          dry_run: true
+
+      - name: Write version to file
+        uses: dolittle/write-version-to-file-action@v2.1.2
+        with:
+          version: '${{ steps.tagging_dryrun.outputs.new_tag }}'
+          path: ./version.json
+          user-email: build@githubaction.com
+          user-name: build-githubaction
+          merge-strategy: merge
+          
   publish-release:
     timeout-minutes: 60
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' && github.event_name=='push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && github.actor == 'build-githubaction'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.7
