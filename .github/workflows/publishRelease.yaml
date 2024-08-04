@@ -58,6 +58,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_sha: ${{ env.NEW_SHA }}
+          create_annotated_tag: true
           release_branches: main
           dry_run: false
 
