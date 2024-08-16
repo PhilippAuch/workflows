@@ -109,7 +109,7 @@ jobs:
           ssh-private-key: ${{ secrets.GH_SSH_PRIVATE }}
 
       - name: Build Docker image with SSH
-        uses: docker/build-push-action@v6.6.1
+        uses: docker/build-push-action@v6.7.0
         env:
           GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
         if: env.GH_SSH != null
@@ -126,7 +126,7 @@ jobs:
             default=${{ env.SSH_AUTH_SOCK }}
 
       - name: Build Docker image without SSH
-        uses: docker/build-push-action@v6.6.1
+        uses: docker/build-push-action@v6.7.0
         env:
           GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
         if: env.GH_SSH == null
