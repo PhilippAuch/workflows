@@ -40,7 +40,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: create new Branch
-        uses: nick-fields/retry@v3.0.0
+        uses: nick-fields/retry@v3.0.1
         with:
           timeout_minutes: 2
           max_attempts: 3
@@ -50,7 +50,7 @@ jobs:
             git checkout -b update-branch-${{ github.run_id }}
 
       - name: do the npm update
-        uses: nick-fields/retry@v3.0.0
+        uses: nick-fields/retry@v3.0.1
         with:
           timeout_minutes: 10
           max_attempts: 2
@@ -67,7 +67,7 @@ jobs:
             npm install -S
 
       - name: git add and push to remote
-        uses: nick-fields/retry@v3.0.0
+        uses: nick-fields/retry@v3.0.1
         with:
           timeout_minutes: 2
           max_attempts: 3

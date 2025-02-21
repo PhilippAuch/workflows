@@ -45,7 +45,7 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
-        uses: nick-fields/retry@v3.0.0
+        uses: nick-fields/retry@v3.0.1
         with:
           timeout_minutes: 10
           max_attempts: 3
@@ -59,14 +59,14 @@ jobs:
 
       - name: Install playwright
         if: steps.check_playwright.outputs.files_exists == 'true'
-        uses: nick-fields/retry@v3.0.0
+        uses: nick-fields/retry@v3.0.1
         with:
           timeout_minutes: 10
           max_attempts: 3
           command: cd ${{ inputs.subfolder }} && npx playwright install --with-deps
 
       - name: Run test
-        uses: nick-fields/retry@v3.0.0
+        uses: nick-fields/retry@v3.0.1
         with:
           timeout_minutes: 10
           max_attempts: 3
