@@ -66,11 +66,11 @@ jobs:
           command: cd ${{ inputs.subfolder }} && npx playwright install --with-deps
 
       - name: Run test
-        uses: nick-fields/retry@v3.0.2
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: cd ${{ inputs.subfolder }} && npm run test
+        # uses: nick-fields/retry@v3.0.2
+        # with:
+        #  timeout_minutes: 10
+        #  max_attempts: 3
+        run: cd ${{ inputs.subfolder }} && npm run test
 
       - name: Save playwright report
         uses: actions/upload-artifact@v4
