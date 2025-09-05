@@ -60,7 +60,7 @@ jobs:
           release_branches: main
           dry_run: false
 
-      - uses: ncipollo/release-action@v1.18.0
+      - uses: ncipollo/release-action@v1.20.0
         with:
           commit: '${{ env.NEW_SHA }}'
           generateReleaseNotes: true
