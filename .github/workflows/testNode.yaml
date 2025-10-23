@@ -49,7 +49,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: cd ${{ inputs.subfolder }} && npm ci
+          command: cd ${{ inputs.subfolder }} && npm install
 
       - name: Check if playwright is used
         id: check_playwright
