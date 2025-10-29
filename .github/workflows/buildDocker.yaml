@@ -65,12 +65,12 @@ jobs:
       - name: Show space
         run: df -h
 
-      - name: Free up space
-        run: |
-          sudo rm -rf /usr/share/dotnet \
-          sudo rm -rf /opt/ghc \
-          sudo rm -rf "/usr/local/share/boost" \
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+#      - name: Free up space
+#        run: |
+#          sudo rm -rf /usr/share/dotnet \
+#          sudo rm -rf /opt/ghc \
+#          sudo rm -rf "/usr/local/share/boost" \
+#          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
       - name: Show space
         run: df -h
@@ -107,6 +107,23 @@ jobs:
         if: env.GH_SSH != null
         with:
           ssh-private-key: ${{ secrets.GH_SSH_PRIVATE }}
+
+      - name: Bump version and write to file
+        uses: mathieudutour/github-tag-action@v6.2
+        id: tagging_dryrun
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          dry_run: true
+
+      - name: Write version to file
+        uses: dolittle/write-version-to-file-action@v2.1.2
+        with:
+          version: '${{ steps.tagging_dryrun.outputs.new_tag }}'
+          path: ./version.json
+          user-email: build@githubaction.com
+          user-name: build-githubaction
+          merge-strategy: merge
 
       - name: Build Docker image with SSH
         uses: docker/build-push-action@v6.18.0
