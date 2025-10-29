@@ -7,18 +7,20 @@ on:
       subfolder:
         required: false
         type: string
-        default: './'
+        default: "./"
 
 jobs:
   publish-release:
     timeout-minutes: 60
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: |
+      ((github.event_name == 'workflow_dispatch' || github.event_name=='push' ||
+      github.event_name == 'schedule') && github.ref == 'refs/heads/main')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5.0.0
         with:
-          fetch-depth: '0'
+          fetch-depth: "0"
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version and push tag
@@ -32,7 +34,7 @@ jobs:
       - name: Write version to file
         uses: dolittle/write-version-to-file-action@v2.1.2
         with:
-          version: '${{ steps.tagging_dryrun.outputs.new_tag }}'
+          version: "${{ steps.tagging_dryrun.outputs.new_tag }}"
           path: ./version.json
           user-email: build@githubaction.com
           user-name: build-githubaction
@@ -62,6 +64,6 @@ jobs:
 
       - uses: ncipollo/release-action@v1.20.0
         with:
-          commit: '${{ env.NEW_SHA }}'
+          commit: "${{ env.NEW_SHA }}"
           generateReleaseNotes: true
-          tag: '${{ steps.tagging.outputs.new_tag }}'
+          tag: "${{ steps.tagging.outputs.new_tag }}"
