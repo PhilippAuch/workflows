@@ -89,7 +89,7 @@ jobs:
           max_attempts: 3
           command: docker-compose -f ${{ inputs.docker-compose-file }} down
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: playwright-report
