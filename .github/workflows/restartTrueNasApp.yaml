@@ -22,8 +22,24 @@ jobs:
     steps:
       - name: Restart TrueNAS App
         uses: gurumitts/truenas-app-action@v4
+        id: control
         with:
           truenas-url: "https://nas.auch.ovh"
           api-key: ${{ secrets.TRUENAS_API_KEY }}
           app-name: ${{ inputs.app_name }}
           action: "restart"
+
+      - name: Show Results
+        run: |
+          echo "=== App Control Results ==="
+          echo "App: ${{ inputs.app_name }}"
+          echo "Final Status: ${{ steps.control.outputs.app-status }}"
+          echo "Success: ${{ steps.control.outputs.success }}"
+          echo "=========================="
+
+          if [ "${{ steps.control.outputs.success }}" = "true" ]; then
+            echo "✅ Action completed successfully"
+          else
+            echo "❌ Action failed"
+            exit 1
+          fi
