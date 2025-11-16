@@ -41,7 +41,7 @@ on:
         required: true
 
 jobs:
-  docker-build-and-push:
+  docker-onprem:
     timeout-minutes: 60
     runs-on: self-hosted
 
