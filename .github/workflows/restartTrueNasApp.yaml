@@ -19,6 +19,7 @@ jobs:
   restart-app:
     timeout-minutes: 60
     runs-on: self-hosted
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Restart TrueNAS App
         uses: gurumitts/truenas-app-action@v4
