@@ -38,7 +38,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v6.0.0
+      - uses: actions/setup-node@v6.1.0
         with:
           node-version: 'lts/*'
           cache: 'npm'
