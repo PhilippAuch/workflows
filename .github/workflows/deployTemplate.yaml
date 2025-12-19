@@ -82,7 +82,7 @@ jobs:
           args: '-summary -skip AlertmanagerConfig -output json ${{ inputs.subfolder }}filled/'
 
       - name: Trigger deploy
-        uses: actions-hub/kubectl@v1.34.3
+        uses: actions-hub/kubectl@v1.35.0
         if: |
           env.KUBE_CONFIG != null &&
           ((github.event_name == 'workflow_dispatch' || github.event_name=='push' ||
