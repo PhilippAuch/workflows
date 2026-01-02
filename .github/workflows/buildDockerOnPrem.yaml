@@ -116,4 +116,4 @@ jobs:
         timeout-minutes: 20
         run: |
           docker run --rm --env DOCKER_ENV=ci-test \
-            ${{env.REGISTRY}}/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
+            registry.auch.ovh/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
