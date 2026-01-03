@@ -40,6 +40,8 @@ jobs:
 
       - name: Publish version
         run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Setup Vals
       #   run: |
