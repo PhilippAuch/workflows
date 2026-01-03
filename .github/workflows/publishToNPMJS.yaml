@@ -3,14 +3,15 @@ name: Publish to NPMJS registry
 
 on:
   workflow_call:
-    inputs:
-      subfolder:
-        required: false
-        type: string
-        default: "./"
 
 jobs:
   publish-release:
+    permissions:
+      id-token: write
+      contents: write
+      issues: write
+      pull-requests: write
+
     timeout-minutes: 60
     runs-on: ubuntu-22.04
     if: |
@@ -42,19 +43,3 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Setup Vals
-      #   run: |
-      #     git config --global user.email "build@githubaction.com"
-      #     git config --global user.name "build-githubaction"
-
-      # - name: Increase version
-      #   run: "npm version patch -m 'chore(release): %s [skip ci]'"
-
-      # - name: Commit version
-      #   run: |
-      #     git show
-      #     git push
-
-      # - name: Publish to registry
-      #   run: npm publish --provenance --access public
