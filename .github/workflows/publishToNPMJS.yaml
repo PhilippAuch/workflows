@@ -38,18 +38,21 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Setup Vals
-        run: |
-          git config --global user.email "build@githubaction.com"
-          git config --global user.name "build-githubaction"
+      - name: Publish version
+        run: npx semantic-release
 
-      - name: Increase version
-        run: "npm version patch -m 'chore(release): %s [skip ci]'"
+      # - name: Setup Vals
+      #   run: |
+      #     git config --global user.email "build@githubaction.com"
+      #     git config --global user.name "build-githubaction"
 
-      - name: Commit version
-        run: |
-          git show
-          git push
+      # - name: Increase version
+      #   run: "npm version patch -m 'chore(release): %s [skip ci]'"
 
-      - name: Publish to registry
-        run: npm publish --provenance --access public
+      # - name: Commit version
+      #   run: |
+      #     git show
+      #     git push
+
+      # - name: Publish to registry
+      #   run: npm publish --provenance --access public
