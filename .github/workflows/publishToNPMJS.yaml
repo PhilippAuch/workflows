@@ -46,5 +46,10 @@ jobs:
       - name: Increase version
         run: "npm version patch -m 'chore(release): %s [skip ci]'"
 
+      - name: Commit version
+        run: |
+          git show
+          git push
+
       - name: Publish to registry
         run: npm publish --provenance --access public
