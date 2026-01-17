@@ -30,6 +30,8 @@ jobs:
 
       - name: Write version to file
         uses: dolittle/write-version-to-file-action@v2.1.2
+        if: |
+          ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
         with:
           version: "${{ steps.tagging_dryrun.outputs.new_tag }}"
           path: ./version.json
@@ -48,6 +50,8 @@ jobs:
 
       - name: Override GITHUB_ENV with new SHA
         id: vars
+        if: |
+          ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
         run: |
           calculatedSha=$(git rev-parse main)
           echo "NEW_SHA=$calculatedSha" >> $GITHUB_ENV
