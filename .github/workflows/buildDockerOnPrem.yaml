@@ -75,7 +75,7 @@ jobs:
         with:
           images: registry.auch.ovh/${{github.repository}}${{inputs.imageNameAddon}}
           flavor: |
-            latest=true
+            latest=${{ github.ref == 'refs/heads/main' }}
           tags: |
             type=raw,value=action-${{ github.run_id }}-${{ github.run_attempt }}
             type=semver,pattern={{version}}
@@ -89,7 +89,7 @@ jobs:
           file: ${{ inputs.subfolder }}${{ inputs.dockerfileName }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
