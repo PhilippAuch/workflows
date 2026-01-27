@@ -7,7 +7,7 @@ on:
       subfolder:
         required: false
         type: string
-        default: './'
+        default: "./"
       branch-name:
         required: false
         type: string
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.branch-name }}
-          fetch-depth: '0'
+          fetch-depth: "0"
 
       - uses: webfactory/ssh-agent@v0.9.1
         env:
@@ -40,9 +40,16 @@ jobs:
 
       - uses: actions/setup-node@v6.2.0
         with:
-          node-version: 'lts/*'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Check all dependencies are needed
+        uses: nick-fields/retry@v3.0.2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: cd ${{ inputs.subfolder }} && npx depcheck
 
       - name: Install dependencies
         uses: nick-fields/retry@v3.0.2
@@ -55,7 +62,7 @@ jobs:
         id: check_playwright
         uses: andstor/file-existence-action@v3.0.0
         with:
-          files: '${{ inputs.subfolder }}playwright.config.ts'
+          files: "${{ inputs.subfolder }}playwright.config.ts"
 
       - name: Install playwright
         if: steps.check_playwright.outputs.files_exists == 'true'
