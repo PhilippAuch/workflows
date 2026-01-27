@@ -44,19 +44,19 @@ jobs:
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
 
-      - name: Check all dependencies are needed
-        uses: nick-fields/retry@v3.0.2
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: cd ${{ inputs.subfolder }} && npx knip
-
       - name: Install dependencies
         uses: nick-fields/retry@v3.0.2
         with:
           timeout_minutes: 10
           max_attempts: 3
           command: cd ${{ inputs.subfolder }} && npm install
+
+      - name: Check all dependencies are needed
+        uses: nick-fields/retry@v3.0.2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: cd ${{ inputs.subfolder }} && npx knip
 
       - name: Check if playwright is used
         id: check_playwright
