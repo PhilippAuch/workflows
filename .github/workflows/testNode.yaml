@@ -84,7 +84,7 @@ jobs:
         # with:
         #  timeout_minutes: 10
         #  max_attempts: 3
-        run: cd ${{ inputs.subfolder }} && npm run test
+        run: cd ${{ inputs.subfolder }} && npm run test --if-present
 
       - name: Save playwright report
         uses: actions/upload-artifact@v6
