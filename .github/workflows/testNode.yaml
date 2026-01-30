@@ -51,6 +51,13 @@ jobs:
           max_attempts: 3
           command: cd ${{ inputs.subfolder }} && npm install
 
+      - name: Run build script if present
+        uses: nick-fields/retry@v3.0.2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: cd ${{ inputs.subfolder }} && npm run build --if-present
+
       - name: Check all dependencies are needed
         uses: nick-fields/retry@v3.0.2
         with:
