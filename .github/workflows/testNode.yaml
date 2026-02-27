@@ -87,7 +87,7 @@ jobs:
         run: cd ${{ inputs.subfolder }} && npm run test --if-present
 
       - name: Save playwright report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() && steps.check_playwright.outputs.files_exists == 'true' }}
         with:
           name: playwright-report
