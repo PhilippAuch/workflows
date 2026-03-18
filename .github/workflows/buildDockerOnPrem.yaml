@@ -27,7 +27,7 @@ on:
       platforms:
         required: false
         type: string
-        default: "linux/amd64"
+        default: "linux/x86_64"
       testImage:
         required: false
         type: boolean
