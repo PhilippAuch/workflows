@@ -35,7 +35,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Setup sonarqube
-        uses: warchant/setup-sonar-scanner@v9
+        uses: warchant/setup-sonar-scanner@v10
 
       - name: Run sonarqube
         uses: nick-fields/retry@v4.0.0
