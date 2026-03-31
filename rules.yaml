@@ -16,3 +16,6 @@ rules:
     min-spaces-from-content: 1
   truthy:
     allowed-values: ["true", "false", "on", "yes", "no"]
+
+ignore:
+  - '/geerlingguy.*/'
