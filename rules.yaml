@@ -18,4 +18,4 @@ rules:
     allowed-values: ["true", "false", "on", "yes", "no"]
 
 ignore:
-  - '/geerlingguy.*/'
+  - './roles/geerlingguy.*/'
