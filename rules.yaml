@@ -17,5 +17,4 @@ rules:
   truthy:
     allowed-values: ["true", "false", "on", "yes", "no"]
 
-ignore:
-  - './roles/geerlingguy.*/'
+ignore-from-file: .yamlignore
