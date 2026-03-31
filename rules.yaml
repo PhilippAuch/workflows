@@ -17,4 +17,4 @@ rules:
   truthy:
     allowed-values: ["true", "false", "on", "yes", "no"]
 
-ignore-from-file: .yamlignore
+ignore-from-file: [.gitignore, .yamlignore]
