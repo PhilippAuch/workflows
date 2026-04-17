@@ -67,7 +67,7 @@ jobs:
 
       - name: Check if playwright is used
         id: check_playwright
-        uses: andstor/file-existence-action@v3.0.0
+        uses: andstor/file-existence-action@v3.1.0
         with:
           files: "${{ inputs.subfolder }}playwright.config.ts"
 
