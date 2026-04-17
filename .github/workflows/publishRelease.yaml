@@ -28,16 +28,31 @@ jobs:
           release_branches: main
           dry_run: true
 
-      - name: Write version to file
-        uses: dolittle/write-version-to-file-action@v2.1.2
+      # - name: Write version to file
+      #   uses: dolittle/write-version-to-file-action@v2.1.2
+      #   if: |
+      #     ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+      #   with:
+      #     version: "${{ steps.tagging_dryrun.outputs.new_tag }}"
+      #     path: ./version.json
+      #     user-email: build@githubaction.com
+      #     user-name: build-githubaction
+      #     merge-strategy: merge
+
+      - uses: devops-actions/json-to-file@v1.0.0
         if: |
           ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
         with:
-          version: "${{ steps.tagging_dryrun.outputs.new_tag }}"
-          path: ./version.json
-          user-email: build@githubaction.com
-          user-name: build-githubaction
-          merge-strategy: merge
+          json: "{'version': '${{ steps.tagging_dryrun.outputs.new_tag }}'}"
+          filename: "./version.json"
+
+      - uses: EndBug/add-and-commit@v10.0.0
+        if: |
+          ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
+        with:
+          default_author: github_actions
+          message: Bump version to ${{ steps.tagging_dryrun.outputs.new_tag }}
+          add: "version.json"
 
       - name: Git pull & push
         if: |
