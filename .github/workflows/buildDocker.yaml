@@ -49,7 +49,7 @@ jobs:
     permissions:
       packages: write
       contents: read
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -83,7 +83,7 @@ jobs:
         uses: docker/setup-buildx-action@v4.0.0
 
       - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v4.1.0
+        uses: docker/login-action@v4.0.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -109,7 +109,7 @@ jobs:
           ssh-private-key: ${{ secrets.GH_SSH_PRIVATE }}
 
       - name: Build Docker image with SSH
-        uses: docker/build-push-action@v7.1.0
+        uses: docker/build-push-action@v7.0.0
         env:
           GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
         if: env.GH_SSH != null
@@ -126,7 +126,7 @@ jobs:
             default=${{ env.SSH_AUTH_SOCK }}
 
       - name: Build Docker image without SSH
-        uses: docker/build-push-action@v7.1.0
+        uses: docker/build-push-action@v7.0.0
         env:
           GH_SSH: ${{ secrets.GH_SSH_PRIVATE }}
         if: env.GH_SSH == null
@@ -143,7 +143,7 @@ jobs:
   image-scanning:
     if: false
     # if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: docker-build-and-push
     timeout-minutes: 60
     continue-on-error: true
@@ -159,7 +159,7 @@ jobs:
           fetch-depth: "0"
 
       - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v4.1.0
+        uses: docker/login-action@v4.0.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -177,7 +177,7 @@ jobs:
 
   test-image:
     if: ${{ inputs.testImage }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     needs: docker-build-and-push
     permissions:
@@ -186,7 +186,7 @@ jobs:
 
     steps:
       - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v4.1.0
+        uses: docker/login-action@v4.0.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}

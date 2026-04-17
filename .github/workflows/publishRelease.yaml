@@ -12,7 +12,7 @@ on:
 jobs:
   publish-release:
     timeout-minutes: 60
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2

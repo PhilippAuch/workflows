@@ -7,7 +7,7 @@ on:
       subfolder:
         required: false
         type: string
-        default: './'
+        default: "./"
       branch-name:
         required: false
         type: string
@@ -24,15 +24,16 @@ jobs:
     timeout-minutes: 60
     env:
       SONAR: ${{ secrets.SONAR_TOKEN }}
-    if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
-    runs-on: ubuntu-22.04
+    if: ((github.event_name == 'workflow_dispatch' || github.event_name=='push') &&
+      github.ref == 'refs/heads/main') || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.branch-name }}
-          fetch-depth: '0'
+          fetch-depth: "0"
 
       - name: Setup sonarqube
         uses: warchant/setup-sonar-scanner@v10
