@@ -39,7 +39,7 @@ jobs:
       #     user-name: build-githubaction
       #     merge-strategy: merge
 
-      - uses: devops-actions/json-to-file@v1.0.0
+      - uses: devops-actions/json-to-file@v1.0.5
         if: |
           ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
         with:
