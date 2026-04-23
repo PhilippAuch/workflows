@@ -83,7 +83,7 @@ jobs:
             }}filled/"
 
       - name: Trigger deploy
-        uses: actions-hub/kubectl@v1.35.4
+        uses: actions-hub/kubectl@v1.36.0
         if: |
           env.KUBE_CONFIG != null &&
           ((github.event_name == 'workflow_dispatch' || github.event_name=='push' ||
