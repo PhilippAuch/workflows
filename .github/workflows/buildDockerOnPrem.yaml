@@ -38,7 +38,7 @@ on:
 
 jobs:
   docker-onprem:
-    timeout-minutes: 60
+    timeout-minutes: 180
     runs-on: self-hosted
 
     steps:
@@ -96,7 +96,7 @@ jobs:
   test-image:
     if: ${{ inputs.testImage }}
     runs-on: self-hosted
-    timeout-minutes: 60
+    timeout-minutes: 12
     needs: docker-onprem
     permissions:
       packages: read
@@ -111,7 +111,7 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: Startup image
-        timeout-minutes: 20
+        timeout-minutes: 10
         run: |
           docker run --rm --env DOCKER_ENV=ci-test \
             registry.auch.ovh/${{github.repository}}${{inputs.imageNameAddon}}:action-${{github.run_id}}-${{github.run_attempt}}
