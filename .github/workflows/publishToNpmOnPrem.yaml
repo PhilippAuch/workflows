@@ -30,6 +30,7 @@ jobs:
         uses: actions/setup-node@v6.4.0
         with:
           node-version: "lts/*"
+          token: ${{ secrets.NPM_TOKEN }}
           registry-url: "https://npm-repo.auch.ovh"
 
       - name: Clean install dependencies
@@ -40,5 +41,3 @@ jobs:
 
       - name: Publish version
         run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
