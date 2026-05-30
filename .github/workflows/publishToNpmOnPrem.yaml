@@ -1,0 +1,45 @@
+---
+name: Publish to npm-repo.auch.ovh
+
+on:
+  workflow_call:
+
+jobs:
+  publish-release:
+    permissions:
+      id-token: write
+      contents: write
+      issues: write
+      pull-requests: write
+
+    timeout-minutes: 180
+    runs-on: self-hosted
+    if: |
+      ((github.event_name == 'workflow_dispatch' || github.event_name=='push' ||
+      github.event_name == 'schedule') && github.ref == 'refs/heads/main')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: "0"
+          persist-credentials: true
+
+      - name: Git pull
+        run: git pull
+
+      - name: Setup Node
+        uses: actions/setup-node@v6.4.0
+        with:
+          node-version: "lts/*"
+          registry-url: "https://npm-repo.auch.ovh"
+
+      - name: Clean install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish version
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
