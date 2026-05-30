@@ -36,6 +36,9 @@ jobs:
       - name: Clean install dependencies
         run: npm ci
 
+      - name: Debug npm config
+        run: cat /home/pauch/actions-runner/_work/_temp/.npmrc
+
       - name: Build package
         run: npm run build
 
