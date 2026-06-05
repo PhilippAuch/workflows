@@ -14,7 +14,7 @@ on:
         default: ${{ github.ref }}
 
 jobs:
-  node-test:
+  node-test-on-prem:
     timeout-minutes: 180
     runs-on: self-hosted
 
