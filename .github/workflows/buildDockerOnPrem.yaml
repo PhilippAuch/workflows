@@ -82,7 +82,7 @@ jobs:
             type=raw,value=${{inputs.imageTag}}
 
       - name: Build Docker image
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.3.0
         with:
           context: ${{ inputs.subfolder }}
           platforms: ${{ inputs.platforms }}
