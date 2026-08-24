@@ -46,7 +46,7 @@ jobs:
           json: "{\"version\": \"${{ steps.tagging_dryrun.outputs.new_tag }}\"}"
           filename: "./version.json"
 
-      - uses: EndBug/add-and-commit@v11.0.0
+      - uses: EndBug/add-and-commit@v11.1.1
         if: |
           ((github.event_name == 'workflow_dispatch' || github.event_name=='push') && github.ref == 'refs/heads/main')
         with:
