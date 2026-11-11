@@ -16,15 +16,13 @@ jobs:
     if: |
       ((github.event_name == 'workflow_dispatch' || github.event_name=='push' ||
       github.event_name == 'schedule') && github.ref == 'refs/heads/main')
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
         with:
-          fetch-depth: "0"
+          fetch-depth: 0
           persist-credentials: true
-
-      - name: Git pull
-        run: git pull
 
       - name: Setup Node
         uses: actions/setup-node@v7.1.0
@@ -36,14 +34,11 @@ jobs:
       - name: Clean install dependencies
         run: npm ci
 
-      - name: Debug npm config
-        run: cat /home/pauch/actions-runner/_work/_temp/.npmrc
-
       - name: Build package
         run: npm run build
 
       - name: Publish version
-        run: npx semantic-release
+        run: npm run release
         env:
           NODE_AUTH_TOKEN: "MzAwZDc0YmVmNDgzMThlZDQyYTc2OTRlMGMwYjgyNTI6OTE3ZmYwZmQ2YmNiYjQ0N2UwY2ZjNTE2MDNkN2UzZDY0ZmM3N2FhZjZjYTJmZjAzMDYxNWRk"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
